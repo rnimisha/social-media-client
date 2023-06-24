@@ -1,4 +1,4 @@
-import { Input } from '@chakra-ui/react';
+import { Box, Input } from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginType } from '@/common/types';
 import { LOGIN_VALIDATION_SCHEMA } from '@/common/validations';
 import FormField from '../ui/FormField';
+import AppButton from '../ui/AppButton';
 
 function LoginForm() {
   const {
@@ -33,7 +34,8 @@ function LoginForm() {
           <Input type="password" {...register('password')} />
         </FormField>
 
-        <input type="submit" />
+        <Box mb="20px" />
+        <AppButton text="Login" type="submit" />
       </form>
       {/* <DevTool control={control} /> */}
     </>

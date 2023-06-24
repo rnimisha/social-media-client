@@ -15,7 +15,7 @@ function AppHeading({ text, fontsize, color }: propTypes) {
 }
 
 AppHeading.defaultProps = {
-  fontsize: '2rem',
+  fontsize: 'clamp(1.8rem, 1.55rem + 0.8vw, 2rem)',
   color: 'primary.300',
 };
 

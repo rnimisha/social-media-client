@@ -1,4 +1,4 @@
-import { FormControl, FormLabel } from '@chakra-ui/react';
+import { FormControl, FormLabel, Text } from '@chakra-ui/react';
 import { FieldError } from 'react-hook-form';
 
 type PropsType = {
@@ -9,11 +9,11 @@ type PropsType = {
 function FormField({ children, error, label }: PropsType) {
   return (
     <>
-      <FormControl>
-        <FormLabel>{label}</FormLabel>
+      <FormControl mt="10px">
+        <FormLabel color="primary.300">{label}</FormLabel>
         {children}
       </FormControl>
-      {error?.message}
+      <Text color="tomato">{error?.message}</Text>
     </>
   );
 }
