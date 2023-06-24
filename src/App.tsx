@@ -6,7 +6,7 @@ import Login from '@/containers/login';
 import Register from '@/containers/register';
 import Home from '@/containers/home';
 
-function App() {
+function App(): JSX.Element {
   const router = createBrowserRouter([
     {
       path: '/',
