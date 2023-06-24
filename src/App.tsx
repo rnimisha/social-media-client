@@ -1,7 +1,33 @@
-import { Box } from "@chakra-ui/react";
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Root from '@/routes/Root';
 
-const App = () => {
-  return <Box bgColor="primary.100">Test</Box>;
-};
+// containers
+import Login from '@/containers/login';
+import Register from '@/containers/register';
+import Home from '@/containers/home';
+
+function App() {
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Root />,
+      children: [
+        {
+          path: '',
+          element: <Home />,
+        },
+      ],
+    },
+    {
+      path: 'login',
+      element: <Login />,
+    },
+    {
+      path: 'register',
+      element: <Register />,
+    },
+  ]);
+  return <RouterProvider router={router} />;
+}
 
 export default App;
