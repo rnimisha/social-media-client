@@ -25,7 +25,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['react-refresh', '@typescript-eslint'],
+  plugins: ['react-refresh', 'import', '@typescript-eslint'],
   rules: {
     'react/jsx-filename-extension': [
       2,
