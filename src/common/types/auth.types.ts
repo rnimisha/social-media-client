@@ -1,5 +1,5 @@
 export type AuthType = {
-  name: string;
+  username: string;
   access_token: string;
   refresh_token: string;
 };

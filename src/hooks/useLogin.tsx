@@ -1,7 +1,7 @@
 import { loginService } from '@/common/services/';
-import { MutOpt, TokenType } from '@/common/types';
+import { AuthType, MutOpt } from '@/common/types';
 import { useMutation } from '@tanstack/react-query';
 
-const useLogin = (opt?: MutOpt<TokenType>) => useMutation(loginService, opt);
+const useLogin = (opt?: MutOpt<AuthType>) => useMutation(loginService, opt);
 
 export default useLogin;

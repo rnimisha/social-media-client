@@ -1,8 +1,8 @@
 import apiClient from '@/common/api/apiClient';
 
-import { LoginType, TokenType } from '../types';
+import { AuthType, LoginType } from '../types';
 
-export const loginService = async (data: LoginType): Promise<TokenType> => {
+export const loginService = async (data: LoginType): Promise<AuthType> => {
   const resp = await apiClient.post('auth/login', data);
   return resp.data;
 };

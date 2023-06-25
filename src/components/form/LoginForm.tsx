@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 
-import { LoginType, TokenType } from '@/common/types';
+import { AuthType, LoginType } from '@/common/types';
 import { LOGIN_VALIDATION_SCHEMA } from '@/common/validations';
 
 import useLogin from '@/hooks/useLogin';
@@ -26,7 +26,7 @@ function LoginForm() {
     resolver: zodResolver(LOGIN_VALIDATION_SCHEMA),
     mode: 'onTouched',
   });
-  const onSuccess = (data: TokenType) => {
+  const onSuccess = (data: AuthType) => {
     dispatch(setAuthData(data));
     navigate('/');
   };

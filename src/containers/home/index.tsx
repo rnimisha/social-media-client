@@ -1,7 +1,7 @@
-import React from "react";
+import withAuth from '@/common/hoc/withAuth';
 
 function Home() {
   return <div>Home</div>;
 }
 
-export default Home;
+export default withAuth(Home);
