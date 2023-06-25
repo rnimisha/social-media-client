@@ -5,7 +5,9 @@ type PropsType = {
   likeCount: number;
   isLiked: boolean;
   // eslint-disable-next-line react/require-default-props
-  action?: () => void;
+  action?:
+    | (() => void)
+    | ((event: React.MouseEvent<HTMLButtonElement>) => void);
 };
 function LikeButton({ likeCount, isLiked, action }: PropsType) {
   return (

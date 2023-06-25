@@ -8,10 +8,36 @@ const useUnLikePost = () => {
   const user = useAppSelector((state) => state.user);
   return useMutation(unlikePostService, {
     onMutate: async ({ postId }) => {
-      await queryClient.cancelQueries(['getMyFeedPost']);
-      const previousPostData = queryClient.getQueryData<
-        FeedPostType[] | undefined
-      >(['getMyFeedPost']);
+      await Promise.allSettled([
+        queryClient.cancelQueries(['getSinglePost', postId]),
+        queryClient.cancelQueries(['getMyFeedPost']),
+      ]);
+
+      const previousPostData = queryClient.getQueryData<FeedPostType>([
+        'getSinglePost',
+        postId,
+      ]);
+      const previousFeedData = queryClient.getQueryData<FeedPostType[]>([
+        'getMyFeedPost',
+      ]);
+
+      queryClient.setQueryData<FeedPostType | undefined>(
+        ['getSinglePost', postId],
+        (prevData) => {
+          if (prevData) {
+            const isPresent = prevData.likes.find(
+              (item) => item.userId === user.id
+            );
+            if (isPresent) {
+              return {
+                ...prevData,
+                likes: prevData.likes.filter((like) => like.userId !== user.id),
+              };
+            }
+          }
+          return prevData;
+        }
+      );
 
       queryClient.setQueryData<FeedPostType[] | undefined>(
         ['getMyFeedPost'],
@@ -33,7 +59,7 @@ const useUnLikePost = () => {
           return prevData;
         }
       );
-      return { previousPostData };
+      return { previousPostData, previousFeedData };
     },
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

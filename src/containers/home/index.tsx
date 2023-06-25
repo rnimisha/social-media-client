@@ -6,11 +6,13 @@ import { setUserDetails } from '@/features/userSlice';
 import useFeedPost from '@/hooks/useFeedPost';
 import useGetUserDetail from '@/hooks/useUserDetail';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
-import { Box, useToast } from '@chakra-ui/react';
+import { Box, Card, useToast } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const toast = useToast();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { username } = useAppSelector((state) => state.auth);
 
   // ----------------- user details--------------------------------
@@ -45,12 +47,25 @@ function Home() {
   if (isFeedPostLoading) {
     return <div>Loading.....</div>;
   }
+
+  const navigateSinglePost = (id: number, uname: string) => {
+    navigate(`/post/${uname}/${id}`);
+  };
   return (
     <div>
       {feedPosts &&
-        feedPosts.map((item) => (
+        feedPosts.length > 0 &&
+        feedPosts?.map((item) => (
           <Box key={item.id} ml="20px" mt="20px">
-            <PostCard post={item} />
+            <Card
+              maxW="2xl"
+              onClick={() =>
+                navigateSinglePost(item.id, `${item.author?.username}`)
+              }
+              cursor="pointer"
+            >
+              <PostCard post={item} />
+            </Card>
           </Box>
         ))}
     </div>

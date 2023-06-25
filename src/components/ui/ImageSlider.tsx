@@ -10,9 +10,23 @@ type PropsType = {
   images: PostImageType[];
 };
 function ImageSlider({ images }: PropsType) {
-  const { sliderRef, slideToNext, slideToPrev } = useSlider();
+  const { sliderRef } = useSlider();
   const top = useBreakpointValue({ base: '90%', md: '50%' });
   const side = useBreakpointValue({ base: '30%', md: '10px' });
+
+  const handleSliderPrev = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (sliderRef.current) {
+      sliderRef.current.slickPrev();
+    }
+  };
+
+  const handleSliderNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (sliderRef.current) {
+      sliderRef.current.slickNext();
+    }
+  };
 
   return (
     <Box position="relative" height="600px" width="full" overflow="hidden">
@@ -25,7 +39,7 @@ function ImageSlider({ images }: PropsType) {
         top={top}
         transform="translate(0%, -50%)"
         zIndex={2}
-        onClick={slideToPrev}
+        onClick={handleSliderPrev}
       >
         <BiLeftArrowAlt />
       </IconButton>
@@ -39,7 +53,7 @@ function ImageSlider({ images }: PropsType) {
         top={top}
         transform="translate(0%, -50%)"
         zIndex={2}
-        onClick={slideToNext}
+        onClick={handleSliderNext}
       >
         <BiRightArrowAlt />
       </IconButton>

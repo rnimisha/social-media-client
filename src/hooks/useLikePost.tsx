@@ -8,10 +8,42 @@ const useLikePost = () => {
   const user = useAppSelector((state) => state.user);
   return useMutation(likePostService, {
     onMutate: async ({ postId }) => {
-      await queryClient.cancelQueries(['getMyFeedPost']);
-      const previousPostData = queryClient.getQueryData<
-        FeedPostType[] | undefined
-      >(['getMyFeedPost']);
+      await Promise.allSettled([
+        queryClient.cancelQueries(['getSinglePost', postId]),
+        queryClient.cancelQueries(['getMyFeedPost']),
+      ]);
+      const previousPostData = queryClient.getQueryData<FeedPostType>([
+        'getSinglePost',
+        postId,
+      ]);
+      const previousFeedData = queryClient.getQueryData<FeedPostType[]>([
+        'getMyFeedPost',
+      ]);
+
+      queryClient.setQueryData<FeedPostType | undefined>(
+        ['getSinglePost', postId],
+        (prevData) => {
+          if (prevData) {
+            const isPresent = prevData.likes.find(
+              (item) => item.userId === user.id
+            );
+            if (!isPresent) {
+              return {
+                ...prevData,
+                likes: [
+                  ...prevData.likes,
+                  {
+                    id: Math.max(...prevData.likes.map((like) => like.id)) + 1,
+                    userId: user.id,
+                    postId,
+                  },
+                ],
+              };
+            }
+          }
+          return prevData;
+        }
+      );
 
       queryClient.setQueryData<FeedPostType[] | undefined>(
         ['getMyFeedPost'],
@@ -40,7 +72,7 @@ const useLikePost = () => {
           return prevData;
         }
       );
-      return { previousPostData };
+      return { previousPostData, previousFeedData };
     },
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

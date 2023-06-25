@@ -11,6 +11,7 @@ import {
   CardFooter,
   Box,
   Text,
+  Divider,
 } from '@chakra-ui/react';
 import moment from 'moment';
 
@@ -37,8 +38,8 @@ function PostCard({ post }: PropsType) {
   };
 
   useEffect(() => {
-    const likes = post.likes.length;
-    const comments = post.comments.length;
+    const likes = post.likes?.length || 0;
+    const comments = post.comments?.length || 0;
 
     setLikeCount(likes);
     setCommentCount(comments);
@@ -48,15 +49,17 @@ function PostCard({ post }: PropsType) {
   const { mutate: likePost } = useLikePost();
   const { mutate: unlikePost } = useUnLikePost();
 
-  const likeAction = () => {
+  const likeAction = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     likePost({ postId: post.id });
   };
-  const unLikeAction = () => {
+  const unLikeAction = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     unlikePost({ postId: post.id });
   };
 
   return (
-    <Card maxW="2xl">
+    <>
       <CardHeader>
         <Flex>
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
@@ -81,16 +84,8 @@ function PostCard({ post }: PropsType) {
         <Text>{post.description}</Text>
       </CardBody>
 
-      {/* {post.images.length > 0 && (
-        <Image
-          objectFit="cover"
-          src={`${BASEURL}/${post.images[0].basename}`}
-          alt="Chakra UI"
-        />
-      )} */}
-
-      {post.images.length > 0 && <ImageSlider images={post.images} />}
-
+      {post.images?.length > 0 && <ImageSlider images={post.images} />}
+      <Divider orientation="horizontal" borderColor="blackAlpha.200" />
       <CardFooter
         justify="space-between"
         flexWrap="wrap"
@@ -107,7 +102,7 @@ function PostCard({ post }: PropsType) {
         />
         <CommentButton commentCount={commentCount} />
       </CardFooter>
-    </Card>
+    </>
   );
 }
 
