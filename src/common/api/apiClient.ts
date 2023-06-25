@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { store } from '@/store/store';
+import { BASEURL } from '@/constants';
 
 const getToken = (): string => {
   const state = store.getState();
@@ -8,7 +9,7 @@ const getToken = (): string => {
 };
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: BASEURL,
 });
 
 apiClient.interceptors.request.use((config) => {
