@@ -48,5 +48,11 @@ module.exports = {
     'import/no-named-as-default': 0,
     camelcase: 'off',
     '@typescript-eslint/camelcase': 'off',
+    'react-hooks/exhaustive-deps': [
+      'off',
+      {
+        additionalHooks: '(useEffect)',
+      },
+    ],
   },
 };

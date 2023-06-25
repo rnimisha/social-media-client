@@ -4,10 +4,13 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 type PropsType = {
   likeCount: number;
   isLiked: boolean;
+  // eslint-disable-next-line react/require-default-props
+  action?: () => void;
 };
-function LikeButton({ likeCount, isLiked }: PropsType) {
+function LikeButton({ likeCount, isLiked, action }: PropsType) {
   return (
     <Button
+      onClick={action}
       flex="1"
       variant="ghost"
       leftIcon={

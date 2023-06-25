@@ -80,6 +80,7 @@ function SidebarContent({ onClose, ...rest }: SidebarProps) {
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
+
       {NAVITEMS.map((link) => (
         <NavItem key={link.name} icon={link.icon} path={link.path}>
           <Text> {link.name}</Text>

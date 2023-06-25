@@ -1,5 +1,5 @@
 import { IconType } from 'react-icons';
-import { FiHome, FiSettings } from 'react-icons/fi';
+import { FiHome, FiSettings, FiMessageSquare, FiUser } from 'react-icons/fi';
 
 export type NavItemType = {
   name: string;
@@ -14,8 +14,18 @@ export const NAVITEMS: NavItemType[] = [
     icon: FiHome,
   },
   {
+    name: 'Messages',
+    path: '/messages',
+    icon: FiMessageSquare,
+  },
+  {
+    name: 'Profile',
+    path: '/profile',
+    icon: FiUser,
+  },
+  {
     name: 'Settings',
-    path: '/register',
+    path: '/settings',
     icon: FiSettings,
   },
 ];

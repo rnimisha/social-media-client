@@ -1,3 +1,4 @@
+import withAuth from '@/common/hoc/withAuth';
 import { logout } from '@/features/authSlice';
 import { useAppDispatch } from '@/store/hook';
 import { useEffect } from 'react';
@@ -13,4 +14,4 @@ function Logout() {
   return <div>logout</div>;
 }
 
-export default Logout;
+export default withAuth(Logout);

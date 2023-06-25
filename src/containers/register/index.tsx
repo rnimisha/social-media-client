@@ -1,5 +1,7 @@
+import withAccess from '@/common/hoc/withAccess';
+
 function Register() {
   return <div>Register</div>;
 }
 
-export default Register;
+export default withAccess(Register);

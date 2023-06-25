@@ -11,9 +11,11 @@ import {
   CardFooter,
   Box,
   Text,
-  Image,
 } from '@chakra-ui/react';
+import moment from 'moment';
 
+import { useAppSelector } from '@/store/hook';
+import useLikePost from '@/hooks/useLikePost';
 import LikeButton from './ui/LikeButton';
 import CommentButton from './ui/CommentButton';
 import ImageSlider from './ui/ImageSlider';
@@ -22,8 +24,16 @@ type PropsType = {
   post: FeedPostType;
 };
 function PostCard({ post }: PropsType) {
+  const user = useAppSelector((state) => state.user);
   const [likeCount, setLikeCount] = useState<number>(0);
   const [commentCount, setCommentCount] = useState<number>(0);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+
+  const checkIsLiked = () => {
+    const data = post.likes.find((like) => like.userId === user.id);
+    const liked = !!data;
+    setIsLiked(liked);
+  };
 
   useEffect(() => {
     const likes = post.likes.length;
@@ -31,7 +41,14 @@ function PostCard({ post }: PropsType) {
 
     setLikeCount(likes);
     setCommentCount(comments);
-  }, []);
+    checkIsLiked();
+  }, [post]);
+
+  const { mutate: likePost } = useLikePost();
+
+  const likeAction = () => {
+    likePost({ postId: post.id });
+  };
 
   return (
     <Card maxW="2xl">
@@ -51,6 +68,7 @@ function PostCard({ post }: PropsType) {
               <Text>{post.author?.username}</Text>
             </Box>
           </Flex>
+          <Text color="gray">{moment(post.createdAt).fromNow()}</Text>
         </Flex>
       </CardHeader>
 
@@ -77,7 +95,11 @@ function PostCard({ post }: PropsType) {
           },
         }}
       >
-        <LikeButton likeCount={likeCount} isLiked />
+        <LikeButton
+          likeCount={likeCount}
+          isLiked={isLiked}
+          action={likeAction}
+        />
         <CommentButton commentCount={commentCount} />
       </CardFooter>
     </Card>
