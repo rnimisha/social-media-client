@@ -26,6 +26,7 @@ import {
 import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { NAVITEMS, NAVITEMS_MINI } from '@/constants';
+import { useAppSelector } from '@/store/hook';
 
 export default function Navbar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -75,7 +76,7 @@ function SidebarContent({ onClose, ...rest }: SidebarProps) {
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+          Connectify
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
@@ -133,6 +134,7 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 function MobileNav({ onOpen, ...rest }: MobileProps) {
+  const userData = useAppSelector((state) => state.user);
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -177,19 +179,16 @@ function MobileNav({ onOpen, ...rest }: MobileProps) {
               _focus={{ boxShadow: 'none' }}
             >
               <HStack>
-                <Avatar
-                  size="sm"
-                  src="https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                />
+                <Avatar size="sm" src="../../assets/images/noprofile.webp" />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="sm">{userData.name}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {userData.username}
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
