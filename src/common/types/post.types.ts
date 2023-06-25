@@ -17,7 +17,8 @@ export type CommentType = {
   description: string;
   createdAt: Date;
 };
-type AuthorType = {
+
+export type AuthorType = {
   name: string;
   username: string;
   profilePic: string;

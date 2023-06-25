@@ -66,6 +66,8 @@ function PostCard({ post }: PropsType) {
         />
       )} */}
 
+      {post.images.length > 0 && <ImageSlider images={post.images} />}
+
       <CardFooter
         justify="space-between"
         flexWrap="wrap"
