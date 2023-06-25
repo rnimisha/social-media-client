@@ -1,12 +1,12 @@
-import { likePostService } from '@/common/services';
+import { unlikePostService } from '@/common/services';
 import { FeedPostType } from '@/common/types';
 import { useAppSelector } from '@/store/hook';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useLikePost = () => {
+const useUnLikePost = () => {
   const queryClient = useQueryClient();
   const user = useAppSelector((state) => state.user);
-  return useMutation(likePostService, {
+  return useMutation(unlikePostService, {
     onMutate: async ({ postId }) => {
       await queryClient.cancelQueries(['getMyFeedPost']);
       const previousPostData = queryClient.getQueryData<
@@ -21,17 +21,10 @@ const useLikePost = () => {
               const isPresent = post.likes.find(
                 (item) => item.userId === user.id
               );
-              if (post.id === postId && !isPresent) {
+              if (post.id === postId && isPresent) {
                 return {
                   ...post,
-                  likes: [
-                    ...post.likes,
-                    {
-                      id: Math.max(...post.likes.map((like) => like.id)) + 1,
-                      userId: user.id,
-                      postId,
-                    },
-                  ],
+                  likes: post.likes.filter((like) => like.userId !== user.id),
                 };
               }
               return post;
@@ -56,4 +49,4 @@ const useLikePost = () => {
   });
 };
 
-export default useLikePost;
+export default useUnLikePost;

@@ -15,4 +15,14 @@ export const likePostService = async (data: Props): Promise<{ id: number }> => {
     throw new Error(JSON.stringify(err));
   }
 };
-export default likePostService;
+export const unlikePostService = async (
+  data: Props
+): Promise<{ id: number }> => {
+  try {
+    const resp = await apiClient.post('like/unlike', data);
+    return resp.data;
+  } catch (error) {
+    const err = getErrorResponse(error as AxiosError);
+    throw new Error(JSON.stringify(err));
+  }
+};

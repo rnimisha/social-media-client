@@ -16,6 +16,7 @@ import moment from 'moment';
 
 import { useAppSelector } from '@/store/hook';
 import useLikePost from '@/hooks/useLikePost';
+import useUnLikePost from '@/hooks/useUnlikePost';
 import LikeButton from './ui/LikeButton';
 import CommentButton from './ui/CommentButton';
 import ImageSlider from './ui/ImageSlider';
@@ -45,9 +46,13 @@ function PostCard({ post }: PropsType) {
   }, [post]);
 
   const { mutate: likePost } = useLikePost();
+  const { mutate: unlikePost } = useUnLikePost();
 
   const likeAction = () => {
     likePost({ postId: post.id });
+  };
+  const unLikeAction = () => {
+    unlikePost({ postId: post.id });
   };
 
   return (
@@ -98,7 +103,7 @@ function PostCard({ post }: PropsType) {
         <LikeButton
           likeCount={likeCount}
           isLiked={isLiked}
-          action={likeAction}
+          action={isLiked ? unLikeAction : likeAction}
         />
         <CommentButton commentCount={commentCount} />
       </CardFooter>
