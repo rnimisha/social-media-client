@@ -31,7 +31,7 @@ module.exports = {
       2,
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
     ],
-    'react-refresh/only-export-components': 'warn',
+    'react-refresh/only-export-components': 'off',
     'react/react-in-jsx-scope': 0,
     'react/jsx-props-no-spreading': 'off',
     'import/extensions': [

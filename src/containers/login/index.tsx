@@ -3,6 +3,7 @@ import LoginForm from '@/components/form/LoginForm';
 // styles
 import { Box, Center, Grid, GridItem, Text, VStack } from '@chakra-ui/react';
 import AppHeading from '@/components/ui/AppHeading';
+import withAccess from '@/common/hoc/withAccess';
 import { formBox } from './styles';
 
 function Login() {
@@ -35,4 +36,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default withAccess(Login);
