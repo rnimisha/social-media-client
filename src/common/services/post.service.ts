@@ -12,7 +12,7 @@ export const getSinglePost = async ({
   postid,
 }: Props): Promise<FeedPostType> => {
   try {
-    const resp = await apiClient.get(`post/${username}/${postid}`);
+    const resp = await apiClient.get(`/post/${username}/${postid}`);
     return resp.data;
   } catch (error) {
     const err = getErrorResponse(error as AxiosError);

@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 
 export const getFeedPosts = async (): Promise<FeedPostType[]> => {
   try {
-    const resp = await apiClient.get('feed');
+    const resp = await apiClient.get('/feed');
     return resp.data;
   } catch (error) {
     const err = getErrorResponse(error as AxiosError);

@@ -9,6 +9,11 @@ export type LikeType = {
   userId: number;
   postId: number;
 };
+type CommentByType = {
+  name: string;
+  username: string;
+  profilePic: string;
+};
 
 export type CommentType = {
   id: number;
@@ -16,6 +21,7 @@ export type CommentType = {
   postId: number;
   description: string;
   createdAt: Date;
+  commentBy?: CommentByType;
 };
 
 export type AuthorType = {

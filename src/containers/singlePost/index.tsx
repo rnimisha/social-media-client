@@ -1,4 +1,5 @@
 import PostCard from '@/components/PostCard';
+import SingleComment from '@/components/SingleComment';
 import CommentForm from '@/components/form/CommentForm';
 import useGetPost from '@/hooks/useGetPost';
 import { useAppSelector } from '@/store/hook';
@@ -24,6 +25,12 @@ function SinglePost() {
           <PostCard post={data} />
           <Box>
             <CommentForm userId={user.id} postId={data.id} />
+            <Box py="10px" px="20px">
+              {data.comments.length > 0 &&
+                data.comments.map((comment) => (
+                  <SingleComment comment={comment} key={comment.id} />
+                ))}
+            </Box>
           </Box>
         </Card>
       )}

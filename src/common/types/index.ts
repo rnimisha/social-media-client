@@ -5,3 +5,4 @@ export * from './auth.types';
 export * from './user-detail.types';
 export * from './error-response';
 export * from './post.types';
+export * from './add-comment.types';

@@ -7,7 +7,7 @@ export const getUserDetailService = async (
   username: string
 ): Promise<UserDetailType> => {
   try {
-    const resp = await apiClient.get(`profile/${username}`);
+    const resp = await apiClient.get(`/profile/${username}`);
     return resp.data;
   } catch (error) {
     const err = getErrorResponse(error as AxiosError);

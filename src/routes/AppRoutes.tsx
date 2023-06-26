@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import Message from '@/containers/message';
 import Profile from '@/containers/profile';
 import Setting from '@/containers/setting';
+import SinglePost from '@/containers/singlePost';
 import Root from './Root';
 
 function AppRoutes() {
@@ -14,6 +15,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<Root />}>
         <Route index element={<Home />} />
+        <Route path="/post/:username/:postid" element={<SinglePost />} />
         <Route path="/messages" element={<Message />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Setting />} />

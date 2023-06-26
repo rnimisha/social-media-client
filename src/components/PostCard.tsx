@@ -1,15 +1,10 @@
 import { useEffect, useState } from 'react';
 import { FeedPostType } from '@/common/types';
-import { BASEURL } from '@/constants';
 import {
-  Card,
   CardHeader,
   Flex,
-  Avatar,
-  Heading,
   CardBody,
   CardFooter,
-  Box,
   Text,
   Divider,
 } from '@chakra-ui/react';
@@ -21,6 +16,7 @@ import useUnLikePost from '@/hooks/useUnlikePost';
 import LikeButton from './ui/LikeButton';
 import CommentButton from './ui/CommentButton';
 import ImageSlider from './ui/ImageSlider';
+import ProfileView from './ProfileView';
 
 type PropsType = {
   post: FeedPostType;
@@ -62,20 +58,14 @@ function PostCard({ post }: PropsType) {
     <>
       <CardHeader>
         <Flex>
-          <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-            <Avatar
+          {post.author && (
+            <ProfileView
               name={post.author?.name}
-              src={
-                post.author?.profilePic &&
-                `${BASEURL}/uploads/profile/${post.author.profilePic}`
-              }
+              username={post.author?.username}
+              profilePic={post.author?.profilePic}
             />
+          )}
 
-            <Box>
-              <Heading size="sm">{post.author?.name}</Heading>
-              <Text>{post.author?.username}</Text>
-            </Box>
-          </Flex>
           <Text color="gray">{moment(post.createdAt).fromNow()}</Text>
         </Flex>
       </CardHeader>

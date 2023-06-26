@@ -8,7 +8,7 @@ type Props = {
 // returns like id on success
 export const likePostService = async (data: Props): Promise<{ id: number }> => {
   try {
-    const resp = await apiClient.post('like', data);
+    const resp = await apiClient.post('/like', data);
     return resp.data;
   } catch (error) {
     const err = getErrorResponse(error as AxiosError);
