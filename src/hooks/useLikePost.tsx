@@ -77,7 +77,6 @@ const useLikePost = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (_error, _, context: any) => {
-      // Revert back to the previous feed post data on error
       if (context?.previousData) {
         queryClient.setQueryData(['getMyFeedPost'], context.previousData);
       }
