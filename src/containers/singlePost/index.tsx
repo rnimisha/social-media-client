@@ -1,9 +1,11 @@
 import PostCard from '@/components/PostCard';
 import SingleComment from '@/components/SingleComment';
 import CommentForm from '@/components/form/CommentForm';
+import BreadCrumb from '@/components/layout/BreadCrumb';
 import useGetPost from '@/hooks/useGetPost';
 import { useAppSelector } from '@/store/hook';
-import { Box, Card } from '@chakra-ui/react';
+import { Box, Card, Divider } from '@chakra-ui/react';
+import { Fragment } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -18,8 +20,7 @@ function SinglePost() {
 
   return (
     <div>
-      {username}
-
+      <BreadCrumb />
       {data !== undefined && data.author && (
         <Card maxW="2xl">
           <PostCard post={data} />
@@ -28,7 +29,14 @@ function SinglePost() {
             <Box py="10px" px="20px">
               {data.comments.length > 0 &&
                 data.comments.map((comment) => (
-                  <SingleComment comment={comment} key={comment.id} />
+                  <Fragment key={comment.id}>
+                    <SingleComment comment={comment} />
+                    <Divider
+                      mt="8px"
+                      orientation="horizontal"
+                      borderColor="blackAlpha.200"
+                    />
+                  </Fragment>
                 ))}
             </Box>
           </Box>
