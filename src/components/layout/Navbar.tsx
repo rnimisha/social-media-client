@@ -63,6 +63,7 @@ interface SidebarProps extends BoxProps {
 }
 
 function SidebarContent({ onClose, ...rest }: SidebarProps) {
+  const userData = useAppSelector((state) => state.user);
   return (
     <Box
       transition="3s ease"
@@ -82,7 +83,15 @@ function SidebarContent({ onClose, ...rest }: SidebarProps) {
       </Flex>
 
       {NAVITEMS.map((link) => (
-        <NavItem key={link.name} icon={link.icon} path={link.path}>
+        <NavItem
+          key={link.name}
+          icon={link.icon}
+          path={
+            link.path === '/profile'
+              ? `${link.path}/${userData.username}`
+              : link.path
+          }
+        >
           <Text> {link.name}</Text>
         </NavItem>
       ))}
@@ -201,17 +210,23 @@ function MobileNav({ onOpen, ...rest }: MobileProps) {
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
-              {NAVITEMS_MINI.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.path}
-                  style={{ textDecoration: 'none' }}
-                  _focus={{ boxShadow: 'none' }}
-                >
-                  <MenuItem>{item.name}</MenuItem>
-                  {item.name === 'Settings' && <MenuDivider />}
-                </Link>
-              ))}
+              {NAVITEMS_MINI.map((item) => {
+                const path =
+                  item.path === '/profile'
+                    ? `${item.path}/${userData.username}`
+                    : item.path;
+                return (
+                  <Link
+                    key={item.name}
+                    href={path}
+                    style={{ textDecoration: 'none' }}
+                    _focus={{ boxShadow: 'none' }}
+                  >
+                    <MenuItem>{item.name}</MenuItem>
+                    {item.name === 'Settings' && <MenuDivider />}
+                  </Link>
+                );
+              })}
             </MenuList>
           </Menu>
         </Flex>

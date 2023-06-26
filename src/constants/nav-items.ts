@@ -33,12 +33,12 @@ export const NAVITEMS: NavItemType[] = [
 export const NAVITEMS_MINI: NavItemType[] = [
   {
     name: 'Profile',
-    path: '/',
+    path: '/profile',
     icon: FiHome,
   },
   {
     name: 'Settings',
-    path: '/register',
+    path: '/settings',
     icon: FiSettings,
   },
   {

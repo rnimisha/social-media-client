@@ -17,7 +17,7 @@ function AppRoutes() {
         <Route index element={<Home />} />
         <Route path="/post/:username/:postid" element={<SinglePost />} />
         <Route path="/messages" element={<Message />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:username" element={<Profile />} />
         <Route path="/settings" element={<Setting />} />
         <Route path="/logout" element={<Logout />} />
       </Route>
