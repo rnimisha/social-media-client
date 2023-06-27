@@ -1,4 +1,4 @@
-import { followUserService } from '@/common/services';
+import { unFollowUserService } from '@/common/services';
 import { FollowingType } from '@/common/types';
 import { useAppSelector } from '@/store/hook';
 
@@ -7,11 +7,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 type PropsType = {
   onError?: (err: unknown) => void;
 };
-const useFollow = ({ onError }: PropsType) => {
+const useUnfollow = ({ onError }: PropsType) => {
   const queryClient = useQueryClient();
   const user = useAppSelector((state) => state.user);
-  return useMutation(followUserService, {
-    onMutate: async ({ userToFollowId }) => {
+  return useMutation(unFollowUserService, {
+    onMutate: async (id) => {
       await queryClient.cancelQueries(['getAllFollowings', user.username]);
 
       const prevFollowData = queryClient.getQueryData<FollowingType[]>([
@@ -23,17 +23,7 @@ const useFollow = ({ onError }: PropsType) => {
         ['getAllFollowings', user.username],
         (prevData) => {
           if (prevData) {
-            return [
-              ...prevData,
-              {
-                id: 10000,
-                followingUser: {
-                  id: userToFollowId,
-                  username: '',
-                  name: '',
-                },
-              },
-            ] as FollowingType[];
+            return prevData?.filter((data) => data.followingUser.id !== id);
           }
           return prevData;
         }
@@ -55,4 +45,4 @@ const useFollow = ({ onError }: PropsType) => {
   });
 };
 
-export default useFollow;
+export default useUnfollow;

@@ -10,7 +10,7 @@ type Props = {
 
 const useGetFollowings = ({ username, onSuccess, onError }: Props) =>
   useQuery<FollowingType[], Error>(
-    ['getAllFollowings', username],
+    ['getAllFollowings', username.trim().toLowerCase()],
     () => getAllFollowings(username),
     {
       onSuccess,

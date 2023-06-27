@@ -5,6 +5,7 @@ import useGetFollowings from '@/hooks/useGetFollowings';
 import { useEffect, useState } from 'react';
 import useFollow from '@/hooks/useFollow';
 import { useParams } from 'react-router-dom';
+import useUnfollow from '@/hooks/useUnfollow';
 import ProfileView from './ProfileView';
 import AppButton from './ui/AppButton';
 
@@ -39,19 +40,24 @@ function FollowCard({ data }: PropsType) {
           following.followingUser.username.toLowerCase() === userData.username
       );
       setisFollowing(!!match);
+    } else if (currUserFollowings && currUserFollowings.length === 0) {
+      setisFollowing(false);
     }
   };
+
+  const { mutate: followUser, isSuccess: followSuccess } = useFollow({});
+  const { mutate: unfollowUser, isSuccess: unfollowSuccess } = useUnfollow({});
 
   useEffect(() => {
     extractUserData();
     checkIsFollowing();
-  }, [followtype, currUserFollowings, data]);
-
-  const { mutate: followUser } = useFollow({});
+  }, [followtype, currUserFollowings, data, unfollowSuccess, followSuccess]);
 
   const clickAction = () => {
     if (!isFollowing && userData) {
       followUser({ userToFollowId: userData.id });
+    } else if (userData) {
+      unfollowUser(userData.id);
     }
   };
 
