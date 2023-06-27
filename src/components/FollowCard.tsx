@@ -17,7 +17,7 @@ function FollowCard({ data }: PropsType) {
   const { followtype } = useParams();
   const currentUser = useAppSelector((state) => state.user);
   const [userData, setUserData] = useState<FollowUserType | undefined>();
-  const [isFollowing, setisFollowing] = useState<boolean>(false);
+  const [isFollowing, setisFollowing] = useState<boolean>();
   const { data: currUserFollowings } = useGetFollowings({
     username: currentUser.username,
   });
@@ -36,9 +36,7 @@ function FollowCard({ data }: PropsType) {
   const checkIsFollowing = (): void => {
     if (currUserFollowings && userData && currUserFollowings.length > 0) {
       const match = currUserFollowings.find(
-        (following) =>
-          following.followingUser.username.toLowerCase() ===
-          userData.username.toLowerCase()
+        (following) => following.followingUser.id === userData.id
       );
       setisFollowing(!!match);
     } else if (currUserFollowings && currUserFollowings.length === 0) {
@@ -52,7 +50,10 @@ function FollowCard({ data }: PropsType) {
   useEffect(() => {
     extractUserData();
     checkIsFollowing();
-  }, [followtype, currUserFollowings, data, unfollowSuccess, followSuccess]);
+  }, [followtype, data, unfollowSuccess, followSuccess]);
+  useEffect(() => {
+    checkIsFollowing();
+  }, [followtype, userData]);
 
   const clickAction = () => {
     if (!isFollowing && userData) {
@@ -62,6 +63,9 @@ function FollowCard({ data }: PropsType) {
     }
   };
 
+  if (isFollowing === undefined) {
+    return <div>Loading...</div>;
+  }
   return (
     <Box mt={2}>
       <Flex py={4} px={8}>
