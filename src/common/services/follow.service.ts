@@ -27,11 +27,16 @@ export const getAllFollowers = async (
   }
 };
 
-export const followUserService = async (data: {
+type dataType = {
   userToFollowId: number;
-}): Promise<{ msg: string }> => {
+  username: string;
+};
+export const followUserService = async (
+  data: dataType
+): Promise<{ msg: string }> => {
   try {
-    const resp = await apiClient.post(`/follow`, data);
+    const { userToFollowId } = data;
+    const resp = await apiClient.post(`/follow`, { userToFollowId });
     return resp.data;
   } catch (error) {
     const err = getErrorResponse(error as AxiosError);
@@ -39,11 +44,15 @@ export const followUserService = async (data: {
   }
 };
 
+type unfollowDataType = {
+  id: number;
+  username: string;
+};
 export const unFollowUserService = async (
-  id: number
+  data: unfollowDataType
 ): Promise<{ msg: string }> => {
   try {
-    const resp = await apiClient.delete(`/follow/${id}`);
+    const resp = await apiClient.delete(`/follow/${data.id}`);
     return resp.data;
   } catch (error) {
     const err = getErrorResponse(error as AxiosError);

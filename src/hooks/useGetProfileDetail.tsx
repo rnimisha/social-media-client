@@ -10,7 +10,7 @@ type Props = {
 
 const useGetProfileDetail = ({ username, onSuccess, onError }: Props) =>
   useQuery<ProfileType, Error>(
-    ['getSinglePost', username],
+    ['getProfileDetail', username.toLowerCase()],
     () => getProfileDetail({ username }),
     {
       onSuccess,

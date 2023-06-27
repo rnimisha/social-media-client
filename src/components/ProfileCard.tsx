@@ -13,20 +13,61 @@ import {
 } from '@chakra-ui/react';
 import { useAppSelector } from '@/store/hook';
 import { useNavigate } from 'react-router-dom';
-import CoverImg from '../assets/images/nocover.png';
+import useUnfollow from '@/hooks/useUnfollow';
+import useFollow from '@/hooks/useFollow';
+import { useEffect, useState } from 'react';
+import useGetFollowings from '@/hooks/useGetFollowings';
 import AppButton from './ui/AppButton';
+import CoverImg from '../assets/images/nocover.png';
 
 type PropsType = {
   userDetail: ProfileType;
 };
 function ProfileCard({ userDetail }: PropsType) {
+  const navigate = useNavigate();
   const currUser = useAppSelector((state) => state.user);
   const isSameUser = userDetail.id === currUser.id;
-  const navigate = useNavigate();
+  const [isFollowing, setisFollowing] = useState<boolean>(false);
 
   const handleShowFollow = (type: 'followers' | 'followings') => {
     navigate(`/profile/${userDetail.username}/${type}`);
   };
+
+  const { data: currUserFollowings } = useGetFollowings({
+    username: currUser.username,
+  });
+
+  const checkIsFollowing = (): void => {
+    if (currUserFollowings && currUserFollowings.length > 0) {
+      const match = currUserFollowings.find(
+        (following) =>
+          following.followingUser.username.toLowerCase() ===
+          userDetail.username.toLowerCase()
+      );
+      setisFollowing(!!match);
+    } else if (currUserFollowings && currUserFollowings.length === 0) {
+      setisFollowing(false);
+    }
+  };
+
+  const { mutate: followUser, isSuccess: followSuccess } = useFollow({});
+  const { mutate: unfollowUser, isSuccess: unfollowSuccess } = useUnfollow({});
+
+  useEffect(() => {
+    checkIsFollowing();
+  }, [followSuccess, unfollowSuccess, currUserFollowings]);
+
+  const clickAction = () => {
+    if (!isFollowing) {
+      followUser({
+        userToFollowId: userDetail.id,
+        username: userDetail.username,
+      });
+    } else {
+      unfollowUser({ id: userDetail.id, username: userDetail.username });
+    }
+  };
+
   return (
     <Center py={6}>
       <Box
@@ -97,7 +138,12 @@ function ProfileCard({ userDetail }: PropsType) {
           {!isSameUser && (
             <Stack direction="row" justify="center" spacing={6}>
               <Stack spacing={0} align="center" mt={8}>
-                <AppButton text="Follow" />
+                <AppButton
+                  text={isFollowing ? 'Unfollow' : 'Follow'}
+                  action={() => {
+                    clickAction();
+                  }}
+                />
               </Stack>
               <Stack spacing={0} align="center" mt={8}>
                 <AppButton text="Message" />

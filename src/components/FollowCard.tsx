@@ -37,7 +37,8 @@ function FollowCard({ data }: PropsType) {
     if (currUserFollowings && userData && currUserFollowings.length > 0) {
       const match = currUserFollowings.find(
         (following) =>
-          following.followingUser.username.toLowerCase() === userData.username
+          following.followingUser.username.toLowerCase() ===
+          userData.username.toLowerCase()
       );
       setisFollowing(!!match);
     } else if (currUserFollowings && currUserFollowings.length === 0) {
@@ -55,9 +56,9 @@ function FollowCard({ data }: PropsType) {
 
   const clickAction = () => {
     if (!isFollowing && userData) {
-      followUser({ userToFollowId: userData.id });
+      followUser({ userToFollowId: userData.id, username: userData.username });
     } else if (userData) {
-      unfollowUser(userData.id);
+      unfollowUser({ id: userData.id, username: userData.username });
     }
   };
 
