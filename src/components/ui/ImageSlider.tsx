@@ -29,7 +29,7 @@ function ImageSlider({ images }: PropsType) {
   };
 
   return (
-    <Box position="relative" height="600px" width="full" overflow="hidden">
+    <Box position="relative" height="520px" width="full" overflow="hidden">
       <IconButton
         aria-label="left-arrow"
         colorScheme="twitter"
