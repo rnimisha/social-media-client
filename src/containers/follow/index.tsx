@@ -4,10 +4,12 @@ import { useParams } from 'react-router-dom';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import FollowCard from '@/components/FollowCard';
+import useGetFollowers from '@/hooks/useGetFollowers';
 
 function Follow() {
   const { username, followtype } = useParams();
   const { data: followingData } = useGetFollowings({ username: `${username}` });
+  const { data: followerData } = useGetFollowers({ username: `${username}` });
 
   useEffect(() => {
     if (
@@ -32,7 +34,17 @@ function Follow() {
         </TabList>
 
         <TabPanels>
-          <TabPanel>followers</TabPanel>
+          <TabPanel>
+            <TabPanel>
+              {followerData?.map((following) => (
+                <FollowCard
+                  data={following}
+                  type="followings"
+                  key={following.id}
+                />
+              ))}
+            </TabPanel>
+          </TabPanel>
 
           <TabPanel>
             {followingData?.map((following) => (
