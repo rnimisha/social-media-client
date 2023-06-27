@@ -3,14 +3,14 @@ import { FeedPostType } from '@/common/types';
 import { getErrorResponse } from '@/common/utils';
 import { AxiosError } from 'axios';
 
-type Props = {
+type SinglePostProps = {
   username: string;
   postid: number;
 };
 export const getSinglePost = async ({
   username,
   postid,
-}: Props): Promise<FeedPostType> => {
+}: SinglePostProps): Promise<FeedPostType> => {
   try {
     const resp = await apiClient.get(`/post/${username}/${postid}`);
     return resp.data;
@@ -20,4 +20,18 @@ export const getSinglePost = async ({
   }
 };
 
-export default getSinglePost;
+type UserPostProps = {
+  username: string;
+};
+
+export const getUserAllPost = async ({
+  username,
+}: UserPostProps): Promise<FeedPostType[]> => {
+  try {
+    const resp = await apiClient.get(`/post/${username}`);
+    return resp.data;
+  } catch (error) {
+    const err = getErrorResponse(error as AxiosError);
+    throw new Error(JSON.stringify(err));
+  }
+};

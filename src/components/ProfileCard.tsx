@@ -9,11 +9,11 @@ import {
   Flex,
   Text,
   Stack,
-  Button,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useAppSelector } from '@/store/hook';
 import CoverImg from '../assets/images/nocover.png';
+import AppButton from './ui/AppButton';
 
 type PropsType = {
   userDetail: ProfileType;
@@ -76,35 +76,11 @@ function ProfileCard({ userDetail }: PropsType) {
 
           {!isSameUser && (
             <Stack direction="row" justify="center" spacing={6}>
-              <Stack spacing={0} align="center">
-                <Button
-                  w="full"
-                  mt={8}
-                  bg="primary.300"
-                  color="white"
-                  rounded="md"
-                  _hover={{
-                    transform: 'translateY(-2px)',
-                    boxShadow: 'lg',
-                  }}
-                >
-                  Follow
-                </Button>
+              <Stack spacing={0} align="center" mt={8}>
+                <AppButton text="Follow" />
               </Stack>
-              <Stack spacing={0} align="center">
-                <Button
-                  w="full"
-                  mt={8}
-                  bg="primary.300"
-                  color="white"
-                  rounded="md"
-                  _hover={{
-                    transform: 'translateY(-2px)',
-                    boxShadow: 'lg',
-                  }}
-                >
-                  Message
-                </Button>
+              <Stack spacing={0} align="center" mt={8}>
+                <AppButton text="Message" />
               </Stack>
             </Stack>
           )}

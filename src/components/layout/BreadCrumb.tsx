@@ -1,15 +1,13 @@
 import { Card, Flex, IconButton } from '@chakra-ui/react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { IoMdArrowRoundBack } from 'react-icons/io';
 
 function BreadCrumb() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
 
   const popPage = () => {
-    const paramsArray = Array.from(searchParams);
-    if (paramsArray.length > 0) {
+    if (document.referrer) {
       navigate(-1);
     } else {
       navigate('/');
