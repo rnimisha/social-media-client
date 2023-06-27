@@ -26,3 +26,27 @@ export const getAllFollowers = async (
     throw new Error(JSON.stringify(err));
   }
 };
+
+export const followUserService = async (data: {
+  userToFollowId: number;
+}): Promise<{ msg: string }> => {
+  try {
+    const resp = await apiClient.post(`/follow`, data);
+    return resp.data;
+  } catch (error) {
+    const err = getErrorResponse(error as AxiosError);
+    throw new Error(JSON.stringify(err));
+  }
+};
+
+export const unFollowUserService = async (
+  id: number
+): Promise<{ msg: string }> => {
+  try {
+    const resp = await apiClient.delete(`/follow/${id}`);
+    return resp.data;
+  } catch (error) {
+    const err = getErrorResponse(error as AxiosError);
+    throw new Error(JSON.stringify(err));
+  }
+};

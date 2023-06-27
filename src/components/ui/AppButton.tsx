@@ -4,8 +4,10 @@ type PropsType = {
   text: string;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
+  // eslint-disable-next-line react/require-default-props
+  action?: () => void;
 };
-function AppButton({ text, type, disabled }: PropsType) {
+function AppButton({ text, type, disabled, action }: PropsType) {
   return (
     <Button
       color="white"
@@ -13,6 +15,7 @@ function AppButton({ text, type, disabled }: PropsType) {
       minW="110px"
       type={type}
       disabled={disabled}
+      onClick={action}
     >
       <Text fontSize="1.2rem">{text}</Text>
     </Button>

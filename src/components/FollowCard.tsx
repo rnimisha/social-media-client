@@ -1,31 +1,80 @@
 import { FollowUserType, FollowerType, FollowingType } from '@/common/types';
 import { Box, Divider, Flex } from '@chakra-ui/react';
 import { useAppSelector } from '@/store/hook';
+import useGetFollowings from '@/hooks/useGetFollowings';
+import { useEffect, useState } from 'react';
+import useFollow from '@/hooks/useFollow';
+import { useParams } from 'react-router-dom';
 import ProfileView from './ProfileView';
 import AppButton from './ui/AppButton';
 
 type PropsType = {
-  type: 'followings' | 'followers';
   data: FollowingType | FollowerType;
 };
 
-function FollowCard({ type, data }: PropsType) {
+function FollowCard({ data }: PropsType) {
+  const { followtype } = useParams();
   const currentUser = useAppSelector((state) => state.user);
-  const userData =
-    type === 'followings'
-      ? (data as FollowingType).followingUser
-      : (data as FollowerType).followerUser;
-  const isFollowing = true;
+  const [userData, setUserData] = useState<FollowUserType | undefined>();
+  const [isFollowing, setisFollowing] = useState<boolean>(false);
+  const { data: currUserFollowings } = useGetFollowings({
+    username: currentUser.username,
+  });
+
+  const extractUserData = (): void => {
+    let extracted: FollowUserType;
+    if (followtype === 'followings') {
+      extracted = (data as FollowingType).followingUser;
+    } else {
+      extracted = (data as FollowerType).followerUser;
+    }
+
+    setUserData(extracted);
+  };
+
+  const checkIsFollowing = (): void => {
+    if (currUserFollowings && userData && currUserFollowings.length > 0) {
+      const match = currUserFollowings.find(
+        (following) =>
+          following.followingUser.username.toLowerCase() === userData.username
+      );
+      setisFollowing(!!match);
+    }
+  };
+
+  useEffect(() => {
+    extractUserData();
+    checkIsFollowing();
+  }, [followtype, currUserFollowings, data]);
+
+  const { mutate: followUser } = useFollow({});
+
+  const clickAction = () => {
+    if (!isFollowing && userData) {
+      followUser({ userToFollowId: userData.id });
+    }
+  };
 
   return (
     <Box mt={2}>
       <Flex py={4} px={8}>
-        <ProfileView
-          name={userData.name}
-          profilePic={userData.profilePic || undefined}
-          username={userData.username}
-        />
-        <AppButton text={isFollowing ? 'Unfollow' : 'Follow'} />
+        {userData && (
+          <ProfileView
+            name={userData?.name}
+            profilePic={userData?.profilePic || undefined}
+            username={userData?.username}
+          />
+        )}
+
+        {userData?.username.toLowerCase() !==
+          currentUser.username.toLowerCase() && (
+          <AppButton
+            text={isFollowing ? 'Unfollow' : 'Follow'}
+            action={() => {
+              clickAction();
+            }}
+          />
+        )}
       </Flex>
 
       <Divider borderColor="blackAlpha.400" />
