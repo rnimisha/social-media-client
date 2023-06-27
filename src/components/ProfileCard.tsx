@@ -12,6 +12,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useAppSelector } from '@/store/hook';
+import { useNavigate } from 'react-router-dom';
 import CoverImg from '../assets/images/nocover.png';
 import AppButton from './ui/AppButton';
 
@@ -21,6 +22,11 @@ type PropsType = {
 function ProfileCard({ userDetail }: PropsType) {
   const currUser = useAppSelector((state) => state.user);
   const isSameUser = userDetail.id === currUser.id;
+  const navigate = useNavigate();
+
+  const handleShowFollow = (type: 'followers' | 'followings') => {
+    navigate(`/profile/${userDetail.username}/${type}`);
+  };
   return (
     <Center py={6}>
       <Box
@@ -60,13 +66,27 @@ function ProfileCard({ userDetail }: PropsType) {
           </Stack>
 
           <Stack direction="row" justify="center" spacing={6}>
-            <Stack spacing={0} align="center">
+            <Stack
+              spacing={0}
+              align="center"
+              cursor="pointer"
+              onClick={() => {
+                handleShowFollow('followers');
+              }}
+            >
               <Text fontWeight={600}>{userDetail.followerCount}</Text>
               <Text fontSize="sm" color="gray.500">
                 Followers
               </Text>
             </Stack>
-            <Stack spacing={0} align="center">
+            <Stack
+              spacing={0}
+              align="center"
+              cursor="pointer"
+              onClick={() => {
+                handleShowFollow('followings');
+              }}
+            >
               <Text fontWeight={600}>{userDetail.followingCount}</Text>
               <Text fontSize="sm" color="gray.500">
                 Followings

@@ -5,3 +5,4 @@ export * from './like.service';
 export * from './post.service';
 export * from './comment.service';
 export * from './profile.service';
+export * from './follow.service';

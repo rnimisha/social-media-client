@@ -7,3 +7,4 @@ export * from './error-response';
 export * from './post.types';
 export * from './add-comment.types';
 export * from './profile.types';
+export * from './follow.types';

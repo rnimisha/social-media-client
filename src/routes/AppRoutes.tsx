@@ -8,6 +8,7 @@ import Message from '@/containers/message';
 import Profile from '@/containers/profile';
 import Setting from '@/containers/setting';
 import SinglePost from '@/containers/singlePost';
+import Follow from '@/containers/follow';
 import Root from './Root';
 
 function AppRoutes() {
@@ -18,6 +19,7 @@ function AppRoutes() {
         <Route path="/post/:username/:postid" element={<SinglePost />} />
         <Route path="/messages" element={<Message />} />
         <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/profile/:username/:followtype" element={<Follow />} />
         <Route path="/settings" element={<Setting />} />
         <Route path="/logout" element={<Logout />} />
       </Route>

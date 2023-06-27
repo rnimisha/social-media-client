@@ -7,11 +7,7 @@ function BreadCrumb() {
   const navigate = useNavigate();
 
   const popPage = () => {
-    if (document.referrer) {
-      navigate(-1);
-    } else {
-      navigate('/');
-    }
+    navigate(-1);
   };
   return (
     <Card py="16px" pl="10px" mb="20px">
