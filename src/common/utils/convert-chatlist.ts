@@ -1,5 +1,7 @@
 import { IChatItemProps } from 'react-chat-elements';
+import { BASEURL } from '@/constants';
 import { ChatType } from '../types';
+import IMG from '../../assets/images/noprofile.webp';
 
 export const convertChatlist = (
   chatList: ChatType[],
@@ -12,7 +14,10 @@ export const convertChatlist = (
         (user) => user.id !== currUserId
       );
 
-      const avatar = anotherUser?.profilePic || '';
+      const avatar =
+        anotherUser?.profilePic !== null
+          ? `${BASEURL}/uploads/profile/${anotherUser?.profilePic}`
+          : IMG;
       const alt = anotherUser?.name || '';
       const title = anotherUser?.username || '';
       const subtitle = item.messages.length > 0 ? item.messages[0].content : '';
