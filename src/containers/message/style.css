@@ -1,0 +1,13 @@
+.nav {
+  background-color: #fff !important;
+}
+
+.selected {
+  background-color: #bdcdd6;
+  border-radius: 15px;
+}
+
+.rce-citem {
+  border-radius: 15px;
+  background-color: transparent;
+}

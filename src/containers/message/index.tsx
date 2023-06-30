@@ -2,10 +2,11 @@ import { convertChatlist } from '@/common/utils';
 import ChatMessages from '@/components/ChatMessages';
 import useGetUserChats from '@/hooks/useGetUserChats';
 import { useAppSelector } from '@/store/hook';
-import { Box, Button, Flex, Textarea } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { ChatList, IChatItemProps } from 'react-chat-elements';
+import { ChatList, IChatItemProps, Navbar } from 'react-chat-elements';
 import 'react-chat-elements/dist/main.css';
+import './style.css';
 
 function Message() {
   const currentUser = useAppSelector((state) => state.user);
@@ -27,10 +28,19 @@ function Message() {
 
   return (
     <Flex height="88vh">
-      <Box flex="1.5" p={4} overflowY="scroll">
+      <Box
+        flex="1.5"
+        p={4}
+        overflowY="scroll"
+        backgroundColor="#fff"
+        borderRadius="12px"
+      >
         <ChatList
           className="chat-list"
-          dataSource={userChatList}
+          dataSource={userChatList.map((chat) => ({
+            ...chat,
+            className: selectedChat === chat.id ? 'selected' : undefined,
+          }))}
           id="chatlist"
           lazyLoadingImage=""
           onClick={changeSelectedChat}
@@ -41,13 +51,26 @@ function Message() {
         flex="4"
         p={4}
         overflowY="scroll"
-        position="relative"
         height="100%"
-        backgroundColor="pink.100"
         flexDirection="column"
+        display="flex"
         justifyContent="space-between"
+        h="100%"
       >
-        {selectedChat && <ChatMessages chatId={selectedChat} />}
+        {selectedChat && (
+          <>
+            <Box
+              p={1}
+              mt={-3}
+              mb={1}
+              backgroundColor="#fff"
+              borderRadius="12px"
+            >
+              <Navbar className="nav" center={<div>Username</div>} />
+            </Box>
+            <ChatMessages chatId={selectedChat} />
+          </>
+        )}
       </Box>
     </Flex>
   );

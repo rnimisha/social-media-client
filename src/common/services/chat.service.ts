@@ -13,4 +13,14 @@ export const getUserChatSerivce = async (): Promise<ChatType[]> => {
   }
 };
 
-export default getUserChatSerivce;
+export const getMessagesByChatId = async (
+  chatId: number
+): Promise<ChatType> => {
+  try {
+    const resp = await apiClient.get(`/chat/chat/${chatId}`);
+    return resp.data;
+  } catch (error) {
+    const err = getErrorResponse(error as AxiosError);
+    throw new Error(JSON.stringify(err));
+  }
+};
