@@ -1,12 +1,5 @@
 import { BASEURL } from '@/constants';
-import {
-  Avatar,
-  Box,
-  Flex,
-  Heading,
-  Text,
-  textDecoration,
-} from '@chakra-ui/react';
+import { Avatar, Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 type PropsType = {
