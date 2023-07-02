@@ -5,7 +5,7 @@ import convertMessagelist from '@/common/utils/convert-messagelist';
 import useGetChatMessages from '@/hooks/useGetChatMessages';
 import { useAppSelector } from '@/store/hook';
 import { Box, Button, Flex, Textarea } from '@chakra-ui/react';
-import { createRef, useEffect, useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import { MessageList, MessageType } from 'react-chat-elements';
 import { useQueryClient } from '@tanstack/react-query';
 import 'react-chat-elements/dist/main.css';
@@ -21,6 +21,7 @@ function ChatMessages({ chatId }: PropsType) {
   const { data: allMsg } = useGetChatMessages({ chatId });
   const messageListReferance = createRef();
   const queryClient = useQueryClient();
+  const msgRef = useRef<HTMLDivElement>(null);
 
   // change format to match the list
   useEffect(() => {
@@ -29,6 +30,13 @@ function ChatMessages({ chatId }: PropsType) {
       setMessages(converted);
     }
   }, [allMsg]);
+
+  // scroll to bottom
+  useEffect(() => {
+    if (msgRef.current) {
+      msgRef.current.scrollTop = msgRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const sendMsg = () => {
     sendMessageService(message, chatId, currUser.id);
@@ -59,10 +67,12 @@ function ChatMessages({ chatId }: PropsType) {
 
   return (
     <>
-      <Box overflowY="auto" flex="100%">
-        {/* {allMsg?.messages.map((msg) => (
-          <div key={msg.id}>{msg.content}</div>
-        ))} */}
+      <Box
+        overflowY="auto"
+        flex="100%"
+        style={{ height: '400px' }}
+        ref={msgRef}
+      >
         <MessageList
           referance={messageListReferance}
           className="message-list"
