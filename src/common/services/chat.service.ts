@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 import { getErrorResponse } from '../utils';
 import { ChatType } from '../types';
 import apiClient from '../api/apiClient';
+import { socket } from '../api';
 
 export const getUserChatSerivce = async (): Promise<ChatType[]> => {
   try {
@@ -23,4 +24,16 @@ export const getMessagesByChatId = async (
     const err = getErrorResponse(error as AxiosError);
     throw new Error(JSON.stringify(err));
   }
+};
+
+export const sendMessageService = async (
+  content: string,
+  chatId: number,
+  senderId: number
+) => {
+  socket.emit('createMessage', {
+    content,
+    senderId,
+    chatId,
+  });
 };

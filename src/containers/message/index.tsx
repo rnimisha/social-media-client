@@ -6,7 +6,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { ChatList, IChatItemProps, Navbar } from 'react-chat-elements';
 import 'react-chat-elements/dist/main.css';
-import './style.css';
+import './style/index.css';
 
 function Message() {
   const currentUser = useAppSelector((state) => state.user);

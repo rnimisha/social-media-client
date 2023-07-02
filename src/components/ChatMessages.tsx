@@ -1,3 +1,5 @@
+import { socket } from '@/common/api';
+import { sendMessageService } from '@/common/services';
 import convertMessagelist from '@/common/utils/convert-messagelist';
 import useGetChatMessages from '@/hooks/useGetChatMessages';
 import { useAppSelector } from '@/store/hook';
@@ -13,6 +15,7 @@ type PropsType = {
 function ChatMessages({ chatId }: PropsType) {
   const currUser = useAppSelector((state) => state.user);
   const [messages, setMessages] = useState<MessageType[]>([]);
+  const [message, setMessage] = useState<string>('');
   const { data: allMsg } = useGetChatMessages({ chatId });
 
   useEffect(() => {
@@ -22,6 +25,7 @@ function ChatMessages({ chatId }: PropsType) {
     }
   }, [allMsg]);
   const messageListReferance = createRef();
+
   return (
     <>
       <Box overflowY="auto" flex="100%">
@@ -39,6 +43,8 @@ function ChatMessages({ chatId }: PropsType) {
           height="90px"
           resize="none"
           placeholder="Write something..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
         <Button
           ml={4}
@@ -46,7 +52,7 @@ function ChatMessages({ chatId }: PropsType) {
           h={8}
           colorScheme="teal"
           borderRadius="md"
-          onClick={() => console.log('click')}
+          onClick={() => sendMessageService(message, chatId, currUser.id)}
         >
           Send
         </Button>
