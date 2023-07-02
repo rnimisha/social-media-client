@@ -40,3 +40,11 @@ export type FeedPostType = {
   comments: CommentType[];
   author?: AuthorType;
 };
+
+export type NewPostType = {
+  id: number;
+  description: string;
+  createdAt: Date | string;
+  userId: number;
+  images: PostImageType[];
+};

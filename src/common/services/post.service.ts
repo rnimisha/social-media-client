@@ -1,5 +1,5 @@
 import apiClient from '@/common/api/apiClient';
-import { FeedPostType } from '@/common/types';
+import { FeedPostType, NewPostType } from '@/common/types';
 import { getErrorResponse } from '@/common/utils';
 import { AxiosError } from 'axios';
 
@@ -29,6 +29,16 @@ export const getUserAllPost = async ({
 }: UserPostProps): Promise<FeedPostType[]> => {
   try {
     const resp = await apiClient.get(`/post/${username}`);
+    return resp.data;
+  } catch (error) {
+    const err = getErrorResponse(error as AxiosError);
+    throw new Error(JSON.stringify(err));
+  }
+};
+
+export const addNewPost = async (data: FormData): Promise<NewPostType> => {
+  try {
+    const resp = await apiClient.post(`/post`, data);
     return resp.data;
   } catch (error) {
     const err = getErrorResponse(error as AxiosError);

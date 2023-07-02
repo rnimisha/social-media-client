@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import useAddPost from '@/hooks/useAddPost';
 import { Flex, Icon, Textarea, Box, Button } from '@chakra-ui/react';
 import { useState } from 'react';
 import { BiImageAdd } from 'react-icons/bi';
@@ -8,6 +9,8 @@ function AddPostForm() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewImgs, setPreviewImgs] = useState<string[]>([]);
   const isMaxFilesReached = selectedFiles.length >= 4;
+
+  const { mutate: addPost } = useAddPost({});
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -36,7 +39,9 @@ function AddPostForm() {
 
     formData.append('description', caption);
 
-    console.log({ caption, selectedFiles });
+    addPost(formData);
+
+    console.log('done');
   };
 
   return (
