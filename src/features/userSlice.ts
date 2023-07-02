@@ -1,4 +1,4 @@
-import { UserDetailType } from '@/common/types';
+import { UpdateProfileResType, UserDetailType } from '@/common/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const initialState: UserDetailType = {
@@ -22,9 +22,16 @@ export const userSlice = createSlice({
       ...state,
       ...action.payload,
     }),
+    updateUserDetails: (
+      state,
+      action: PayloadAction<UpdateProfileResType>
+    ) => ({
+      ...state,
+      ...action.payload,
+    }),
   },
 });
 
-export const { setUserDetails } = userSlice.actions;
+export const { setUserDetails, updateUserDetails } = userSlice.actions;
 
 export default userSlice.reducer;

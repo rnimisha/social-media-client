@@ -1,7 +1,15 @@
-import { Flex, Input, Stack, useColorModeValue } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
+import {
+  Box,
+  Center,
+  Flex,
+  Input,
+  Stack,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { UpdateProfileType } from '@/common/types';
 import { useAppSelector } from '@/store/hook';
+import useUpdateProfile from '@/hooks/useUpdateProfile';
 import FormField from '../ui/FormField';
 import AppButton from '../ui/AppButton';
 
@@ -20,6 +28,18 @@ function UpdateProfileForm(): JSX.Element {
     mode: 'onTouched',
   });
 
+  const { mutate } = useUpdateProfile({});
+
+  const onFormSubmit: SubmitHandler<UpdateProfileType> = (data) => {
+    const formData = new FormData();
+
+    Object.keys(data).forEach((key) => {
+      formData.set(key, data[key as keyof UpdateProfileType]);
+    });
+
+    mutate({ data: formData, username: user.username });
+  };
+
   return (
     <Flex align="center" justify="center">
       <Stack
@@ -32,7 +52,7 @@ function UpdateProfileForm(): JSX.Element {
         p={6}
         my={12}
       >
-        <form noValidate>
+        <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
           <FormField error={errors.name} label="Name">
             <Input {...register('name')} />
           </FormField>
@@ -42,9 +62,10 @@ function UpdateProfileForm(): JSX.Element {
           <FormField error={errors.email} label="Email">
             <Input {...register('email')} />
           </FormField>
+          <Center mt={8} w="100%">
+            <AppButton text="Submit" type="submit" />
+          </Center>
         </form>
-
-        <AppButton text="Submit" type="submit" />
       </Stack>
     </Flex>
   );

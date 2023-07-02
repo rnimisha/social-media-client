@@ -10,3 +10,13 @@ export type ProfileType = {
   followingCount: number;
   postCount: number;
 };
+
+export type UpdateProfileResType = {
+  id: number;
+  email: string;
+  username: string;
+  name: string;
+  profilePic: string;
+  coverPic: string;
+  updatedAt?: Date;
+};
