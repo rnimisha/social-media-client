@@ -1,24 +1,23 @@
-import { addCommentService, addNewPost } from '@/common/services';
-import { FeedPostType } from '@/common/types';
-import { useAppSelector } from '@/store/hook';
-
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addNewPost } from '@/common/services';
+import { useMutation } from '@tanstack/react-query';
+import useFeedPost from './useFeedPost';
 
 type PropsType = {
+  onSuccess?: () => void;
   onError?: (err: unknown) => void;
 };
-const useAddPost = ({ onError }: PropsType) => {
-  const queryClient = useQueryClient();
-
-  const currUser = useAppSelector((state) => state.user);
+const useAddPost = ({ onError, onSuccess }: PropsType) => {
+  const { refetch } = useFeedPost({});
 
   return useMutation(addNewPost, {
-    onError: (err) => {
-      console.log(err);
+    onSuccess: () => {
+      refetch();
+
+      if (onSuccess) {
+        onSuccess();
+      }
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
+    onError,
   });
 };
 

@@ -1,16 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import useAddPost from '@/hooks/useAddPost';
-import { Flex, Icon, Textarea, Box, Button } from '@chakra-ui/react';
+import { Flex, Icon, Textarea, Box, Button, Spinner } from '@chakra-ui/react';
 import { useState } from 'react';
 import { BiImageAdd } from 'react-icons/bi';
+import AppLoader from '../ui/AppLoader';
 
 function AddPostForm() {
   const [caption, setCaption] = useState<string>('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewImgs, setPreviewImgs] = useState<string[]>([]);
   const isMaxFilesReached = selectedFiles.length >= 4;
-
-  const { mutate: addPost } = useAddPost({});
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -30,19 +29,28 @@ function AddPostForm() {
     setPreviewImgs(updatedUrls);
   };
 
+  const onSubmitSuccess = () => {
+    setCaption('');
+    setSelectedFiles([]);
+    setPreviewImgs([]);
+  };
+
+  const { mutate: addPost, isLoading } = useAddPost({
+    onSuccess: onSubmitSuccess,
+  });
   const onFormSubmit = () => {
     const formData = new FormData();
-
     selectedFiles.forEach((file) => {
       formData.append(`images`, file);
     });
-
     formData.append('description', caption);
 
     addPost(formData);
-
-    console.log('done');
   };
+
+  if (isLoading) {
+    return <AppLoader />;
+  }
 
   return (
     <form>
