@@ -1,7 +1,8 @@
 import withAuth from '@/common/hoc/withAuth';
-import { UserDetailType } from '@/common/types';
+import { FeedPostType, UserDetailType } from '@/common/types';
 import { parseError } from '@/common/utils';
 import PostCard from '@/components/PostCard';
+import AddPostForm from '@/components/form/AddPostForm';
 import { setUserDetails } from '@/features/userSlice';
 import useFeedPost from '@/hooks/useFeedPost';
 import useGetUserDetail from '@/hooks/useUserDetail';
@@ -53,9 +54,13 @@ function Home() {
   };
   return (
     <div>
+      <Card ml="20px" maxW="2xl" p={2}>
+        <AddPostForm />
+      </Card>
+
       {feedPosts &&
         feedPosts.length > 0 &&
-        feedPosts?.map((item) => (
+        feedPosts?.map((item: FeedPostType) => (
           <Box key={item.id} ml="20px" mt="20px">
             <Card
               maxW="2xl"

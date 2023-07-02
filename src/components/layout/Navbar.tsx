@@ -23,10 +23,12 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react';
-import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi';
+import { FiMenu, FiChevronDown } from 'react-icons/fi';
 import { IconType } from 'react-icons';
-import { NAVITEMS, NAVITEMS_MINI } from '@/constants';
+import { BASEURL, NAVITEMS, NAVITEMS_MINI } from '@/constants';
 import { useAppSelector } from '@/store/hook';
+import { useNavigate } from 'react-router-dom';
+import AppHeading from '../ui/AppHeading';
 
 export default function Navbar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -63,6 +65,7 @@ interface SidebarProps extends BoxProps {
 }
 
 function SidebarContent({ onClose, ...rest }: SidebarProps) {
+  const navigate = useNavigate();
   const userData = useAppSelector((state) => state.user);
   return (
     <Box
@@ -76,14 +79,23 @@ function SidebarContent({ onClose, ...rest }: SidebarProps) {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Connectify
+        <Text
+          cursor="pointer"
+          fontSize="xl"
+          fontWeight="bold"
+          onClick={() => navigate('/')}
+        >
+          <AppHeading text="Connectify" />
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
 
       {NAVITEMS.map((link) => (
         <NavItem
+          _hover={{
+            backgroundColor: 'primary.100',
+            color: '#fff',
+          }}
           key={link.name}
           icon={link.icon}
           path={
@@ -175,12 +187,6 @@ function MobileNav({ onOpen, ...rest }: MobileProps) {
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
         <Flex alignItems="center">
           <Menu>
             <MenuButton
@@ -189,7 +195,10 @@ function MobileNav({ onOpen, ...rest }: MobileProps) {
               _focus={{ boxShadow: 'none' }}
             >
               <HStack>
-                <Avatar size="sm" src="../../assets/images/noprofile.webp" />
+                <Avatar
+                  size="sm"
+                  src={`${BASEURL}/uploads/profile/${userData.profilePic}`}
+                />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
                   alignItems="flex-start"

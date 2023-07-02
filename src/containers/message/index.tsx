@@ -4,7 +4,7 @@ import useGetUserChats from '@/hooks/useGetUserChats';
 import { useAppSelector } from '@/store/hook';
 import { Box, Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { ChatList, IChatItemProps, Navbar } from 'react-chat-elements';
+import { ChatList, IChatItemProps } from 'react-chat-elements';
 import 'react-chat-elements/dist/main.css';
 import './style/index.css';
 
@@ -57,20 +57,7 @@ function Message() {
         justifyContent="space-between"
         h="100%"
       >
-        {selectedChat && (
-          <>
-            <Box
-              p={1}
-              mt={-3}
-              mb={1}
-              backgroundColor="#fff"
-              borderRadius="12px"
-            >
-              <Navbar className="nav" center={<div>Username</div>} />
-            </Box>
-            <ChatMessages chatId={selectedChat} />
-          </>
-        )}
+        {selectedChat && <ChatMessages chatId={selectedChat} />}
       </Box>
     </Flex>
   );

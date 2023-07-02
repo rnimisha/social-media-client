@@ -1,14 +1,12 @@
-import { socket } from '@/common/api';
 import { sendMessageService } from '@/common/services';
-import { AppMessageType, ChatType } from '@/common/types';
-import convertMessagelist from '@/common/utils/convert-messagelist';
+import { convertMessagelist } from '@/common/utils';
 import useGetChatMessages from '@/hooks/useGetChatMessages';
 import { useAppSelector } from '@/store/hook';
 import { Box, Button, Flex, Textarea } from '@chakra-ui/react';
 import { createRef, useEffect, useRef, useState } from 'react';
 import { MessageList, MessageType } from 'react-chat-elements';
-import { useQueryClient } from '@tanstack/react-query';
 import 'react-chat-elements/dist/main.css';
+import useMsgListener from '@/hooks/useMsgListener';
 
 type PropsType = {
   chatId: number;
@@ -18,10 +16,12 @@ function ChatMessages({ chatId }: PropsType) {
   const currUser = useAppSelector((state) => state.user);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [message, setMessage] = useState<string>('');
-  const { data: allMsg } = useGetChatMessages({ chatId });
+
   const messageListReferance = createRef();
-  const queryClient = useQueryClient();
   const msgRef = useRef<HTMLDivElement>(null);
+
+  useMsgListener({ chatId });
+  const { data: allMsg } = useGetChatMessages({ chatId });
 
   // change format to match the list
   useEffect(() => {
@@ -42,28 +42,6 @@ function ChatMessages({ chatId }: PropsType) {
     sendMessageService(message, chatId, currUser.id);
     setMessage('');
   };
-
-  const messageListener = (newMsg: AppMessageType) => {
-    const existingData: ChatType | undefined = queryClient.getQueryData([
-      'getChatMessages',
-      chatId,
-    ]);
-
-    if (existingData) {
-      const updatedData = {
-        ...existingData,
-        messages: [...existingData.messages, newMsg],
-      };
-      queryClient.setQueryData(['getChatMessages', chatId], updatedData);
-    }
-  };
-
-  useEffect(() => {
-    socket?.on('receiveMessage', messageListener);
-    return () => {
-      socket?.off('receiveMessage', messageListener);
-    };
-  }, [messageListener]);
 
   return (
     <>
