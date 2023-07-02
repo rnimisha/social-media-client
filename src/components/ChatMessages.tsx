@@ -1,11 +1,13 @@
 import { socket } from '@/common/api';
 import { sendMessageService } from '@/common/services';
+import { AppMessageType, ChatType } from '@/common/types';
 import convertMessagelist from '@/common/utils/convert-messagelist';
 import useGetChatMessages from '@/hooks/useGetChatMessages';
 import { useAppSelector } from '@/store/hook';
 import { Box, Button, Flex, Textarea } from '@chakra-ui/react';
 import { createRef, useEffect, useState } from 'react';
 import { MessageList, MessageType } from 'react-chat-elements';
+import { useQueryClient } from '@tanstack/react-query';
 import 'react-chat-elements/dist/main.css';
 
 type PropsType = {
@@ -17,18 +19,50 @@ function ChatMessages({ chatId }: PropsType) {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [message, setMessage] = useState<string>('');
   const { data: allMsg } = useGetChatMessages({ chatId });
+  const messageListReferance = createRef();
+  const queryClient = useQueryClient();
 
+  // change format to match the list
   useEffect(() => {
     if (allMsg) {
       const converted = convertMessagelist(allMsg, currUser.id);
       setMessages(converted);
     }
   }, [allMsg]);
-  const messageListReferance = createRef();
+
+  const sendMsg = () => {
+    sendMessageService(message, chatId, currUser.id);
+    setMessage('');
+  };
+
+  const messageListener = (newMsg: AppMessageType) => {
+    const existingData: ChatType | undefined = queryClient.getQueryData([
+      'getChatMessages',
+      chatId,
+    ]);
+
+    if (existingData) {
+      const updatedData = {
+        ...existingData,
+        messages: [...existingData.messages, newMsg],
+      };
+      queryClient.setQueryData(['getChatMessages', chatId], updatedData);
+    }
+  };
+
+  useEffect(() => {
+    socket?.on('receiveMessage', messageListener);
+    return () => {
+      socket?.off('receiveMessage', messageListener);
+    };
+  }, [messageListener]);
 
   return (
     <>
       <Box overflowY="auto" flex="100%">
+        {/* {allMsg?.messages.map((msg) => (
+          <div key={msg.id}>{msg.content}</div>
+        ))} */}
         <MessageList
           referance={messageListReferance}
           className="message-list"
@@ -39,6 +73,7 @@ function ChatMessages({ chatId }: PropsType) {
       </Box>
       <Flex align="center" justify="space-between" mt="auto" p={4}>
         <Textarea
+          borderColor="green"
           flex="1"
           height="90px"
           resize="none"
@@ -52,7 +87,7 @@ function ChatMessages({ chatId }: PropsType) {
           h={8}
           colorScheme="teal"
           borderRadius="md"
-          onClick={() => sendMessageService(message, chatId, currUser.id)}
+          onClick={() => sendMsg()}
         >
           Send
         </Button>
