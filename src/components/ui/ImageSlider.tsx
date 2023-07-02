@@ -30,33 +30,41 @@ function ImageSlider({ images }: PropsType) {
 
   return (
     <Box position="relative" height="520px" width="full" overflow="hidden">
-      <IconButton
-        aria-label="left-arrow"
-        colorScheme="twitter"
-        borderRadius="full"
-        position="absolute"
-        left={side}
-        top={top}
-        transform="translate(0%, -50%)"
-        zIndex={2}
-        onClick={handleSliderPrev}
-      >
-        <BiLeftArrowAlt />
-      </IconButton>
+      {images.length > 1 && (
+        <>
+          <IconButton
+            aria-label="left-arrow"
+            bgColor="primary.300"
+            color="white"
+            opacity={0.8}
+            borderRadius="full"
+            position="absolute"
+            left={side}
+            top={top}
+            transform="translate(0%, -50%)"
+            zIndex={2}
+            onClick={handleSliderPrev}
+          >
+            <BiLeftArrowAlt />
+          </IconButton>
 
-      <IconButton
-        aria-label="right-arrow"
-        colorScheme="twitter"
-        borderRadius="full"
-        position="absolute"
-        right={side}
-        top={top}
-        transform="translate(0%, -50%)"
-        zIndex={2}
-        onClick={handleSliderNext}
-      >
-        <BiRightArrowAlt />
-      </IconButton>
+          <IconButton
+            aria-label="right-arrow"
+            bgColor="primary.300"
+            color="white"
+            opacity={0.8}
+            borderRadius="full"
+            position="absolute"
+            right={side}
+            top={top}
+            transform="translate(0%, -50%)"
+            zIndex={2}
+            onClick={handleSliderNext}
+          >
+            <BiRightArrowAlt />
+          </IconButton>
+        </>
+      )}
 
       <Slider {...sliderSettings} ref={sliderRef}>
         {images.map((image) => (
