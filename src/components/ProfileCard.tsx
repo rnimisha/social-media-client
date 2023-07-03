@@ -10,7 +10,10 @@ import {
   Text,
   Stack,
   useColorModeValue,
+  AvatarBadge,
+  IconButton,
 } from '@chakra-ui/react';
+import { MdOutlineModeEdit } from 'react-icons/md';
 import { useAppSelector } from '@/store/hook';
 import { useNavigate } from 'react-router-dom';
 import useUnfollow from '@/hooks/useUnfollow';
@@ -19,6 +22,8 @@ import { useEffect, useState } from 'react';
 import useGetFollowings from '@/hooks/useGetFollowings';
 import AppButton from './ui/AppButton';
 import CoverImg from '../assets/images/nocover.png';
+import ChangeProfilePic from './form/ChangeProfilePic';
+import AppModal from './ui/AppModal';
 
 type PropsType = {
   userDetail: ProfileType;
@@ -28,6 +33,7 @@ function ProfileCard({ userDetail }: PropsType) {
   const currUser = useAppSelector((state) => state.user);
   const isSameUser = userDetail.id === currUser.id;
   const [isFollowing, setisFollowing] = useState<boolean>(false);
+  const [isChangeProfile, setIsChangeProfile] = useState<boolean>(false);
 
   const handleShowFollow = (type: 'followers' | 'followings') => {
     navigate(`/profile/${userDetail.username}/${type}`);
@@ -95,7 +101,25 @@ function ProfileCard({ userDetail }: PropsType) {
             css={{
               border: '2px solid white',
             }}
-          />
+          >
+            {isSameUser && (
+              <AvatarBadge
+                as={IconButton}
+                size="sm"
+                rounded="full"
+                top="-10px"
+                color="primary.300"
+                border="none"
+                bgColor="primary.100"
+                opacity={0.9}
+                aria-label="Edit Profile Pic"
+                icon={<MdOutlineModeEdit />}
+                onClick={() => {
+                  setIsChangeProfile(true);
+                }}
+              />
+            )}
+          </Avatar>
         </Flex>
 
         <Box p={6}>
@@ -152,6 +176,15 @@ function ProfileCard({ userDetail }: PropsType) {
           )}
         </Box>
       </Box>
+      <AppModal
+        isOpenModal={isChangeProfile}
+        onClose={() => {
+          setIsChangeProfile(false);
+        }}
+        title="Choose Picture"
+      >
+        <ChangeProfilePic />
+      </AppModal>
     </Center>
   );
 }
