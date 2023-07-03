@@ -183,7 +183,11 @@ function ProfileCard({ userDetail }: PropsType) {
         }}
         title="Choose Picture"
       >
-        <ChangeProfilePic />
+        <ChangeProfilePic
+          closeModal={() => {
+            setIsChangeProfile(false);
+          }}
+        />
       </AppModal>
     </Center>
   );

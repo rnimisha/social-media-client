@@ -2,9 +2,16 @@ import { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import { Box, Button, Stack, Text } from '@chakra-ui/react';
 import getCroppedImg from '@/common/utils/crop';
+import useUpdateProfile from '@/hooks/useUpdateProfile';
+import { useAppSelector } from '@/store/hook';
 import AppButton from '../ui/AppButton';
+import AppLoader from '../ui/AppLoader';
 
-function ChangeProfilePic() {
+type PropsType = {
+  closeModal: () => void;
+};
+function ChangeProfilePic({ closeModal }: PropsType) {
+  const user = useAppSelector((state) => state.user);
   const [selectedImg, setSelectedImg] = useState<File>();
   const [croppedImg, setCroppedImg] = useState<File>();
   const [imgCroppedAreaPixels, setImgCroppedAreaPixels] = useState(null);
@@ -32,6 +39,19 @@ function ChangeProfilePic() {
       console.log(error);
     }
   };
+
+  const { mutate, isLoading } = useUpdateProfile({});
+
+  const onFormSubmit = () => {
+    const formData = new FormData();
+    if (croppedImg) formData.append('profilePic', croppedImg);
+    mutate({ data: formData, username: user.username });
+    closeModal();
+  };
+
+  if (isLoading) {
+    return <AppLoader />;
+  }
 
   if (selectedImg !== undefined) {
     return (
@@ -101,7 +121,9 @@ function ChangeProfilePic() {
           )}
         </Box>
 
-        {croppedImg && <AppButton type="submit" text="Change Profile" />}
+        {croppedImg && (
+          <AppButton action={onFormSubmit} text="Change Profile" />
+        )}
       </Stack>
     </form>
   );
