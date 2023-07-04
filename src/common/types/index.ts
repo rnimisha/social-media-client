@@ -13,3 +13,4 @@ export * from './chat.types';
 export * from './message.types';
 export * from './participants.types';
 export * from './update-profile.types';
+export * from './register.types';
