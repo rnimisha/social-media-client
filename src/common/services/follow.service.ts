@@ -1,6 +1,6 @@
 import apiClient from '@/common/api/apiClient';
 import { AxiosError } from 'axios';
-import { FollowerType, FollowingType } from '@/common/types';
+import { FollowUserType, FollowerType, FollowingType } from '@/common/types';
 import { getErrorResponse } from '@/common/utils';
 
 export const getAllFollowings = async (
@@ -53,6 +53,16 @@ export const unFollowUserService = async (
 ): Promise<{ msg: string }> => {
   try {
     const resp = await apiClient.delete(`/follow/${data.id}`);
+    return resp.data;
+  } catch (error) {
+    const err = getErrorResponse(error as AxiosError);
+    throw new Error(JSON.stringify(err));
+  }
+};
+
+export const getUserToFollowService = async (): Promise<FollowUserType[]> => {
+  try {
+    const resp = await apiClient.get('/follow/usertofollow');
     return resp.data;
   } catch (error) {
     const err = getErrorResponse(error as AxiosError);

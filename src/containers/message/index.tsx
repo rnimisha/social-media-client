@@ -14,7 +14,7 @@ function Message() {
   const currentUser = useAppSelector((state) => state.user);
   const [userChatList, setUserChatList] = useState<IChatItemProps[]>([]);
   const [selectedChat, setSelectedChat] = useState<number>(
-    navData.state.chatid
+    navData?.state?.chatid
   );
   const { data: allChats, isLoading } = useGetUserChats({});
 

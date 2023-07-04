@@ -1,13 +1,17 @@
 import withAuth from '@/common/hoc/withAuth';
+import { getUserToFollowService } from '@/common/services';
 import { FeedPostType, UserDetailType } from '@/common/types';
 import { parseError } from '@/common/utils';
+import MiniProfileCard from '@/components/MiniProfileCard';
 import PostCard from '@/components/PostCard';
 import AddPostForm from '@/components/form/AddPostForm';
+import AppHeading from '@/components/ui/AppHeading';
 import { setUserDetails } from '@/features/userSlice';
 import useFeedPost from '@/hooks/useFeedPost';
 import useGetUserDetail from '@/hooks/useUserDetail';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
-import { Box, Card, useToast } from '@chakra-ui/react';
+import { Box, Card, Divider, Grid, GridItem, useToast } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
@@ -31,7 +35,7 @@ function Home() {
     });
   };
 
-  const query = useGetUserDetail({
+  useGetUserDetail({
     username: username || '',
     onSuccess: onGetUserDetailSuccess,
     onError: onGetUserDetailError,
@@ -45,6 +49,12 @@ function Home() {
     },
   });
 
+  // ------------------- people to follow ---------------------------
+  const { data: peopleToFollow } = useQuery(
+    ['getPeopleToFollow'],
+    getUserToFollowService
+  );
+
   if (isFeedPostLoading) {
     return <div>Loading.....</div>;
   }
@@ -53,27 +63,45 @@ function Home() {
     navigate(`/post/${uname}/${id}`);
   };
   return (
-    <div>
-      <Card ml="20px" maxW="2xl" p={2}>
-        <AddPostForm />
-      </Card>
+    <Box display="flex" justifyContent="space-between">
+      <Box flex={1}>
+        <Card maxW="2xl" p={2}>
+          <AddPostForm />
+        </Card>
 
-      {feedPosts &&
-        feedPosts.length > 0 &&
-        feedPosts?.map((item: FeedPostType) => (
-          <Box key={item.id} ml="20px" mt="20px">
-            <Card
-              maxW="2xl"
-              onClick={() =>
-                navigateSinglePost(item.id, `${item.author?.username}`)
-              }
-              cursor="pointer"
-            >
-              <PostCard post={item} />
-            </Card>
-          </Box>
-        ))}
-    </div>
+        {feedPosts &&
+          feedPosts.length > 0 &&
+          feedPosts?.map((item: FeedPostType) => (
+            <Box key={item.id} mt="20px">
+              <Card
+                maxW="2xl"
+                onClick={() =>
+                  navigateSinglePost(item.id, `${item.author?.username}`)
+                }
+                cursor="pointer"
+              >
+                <PostCard post={item} />
+              </Card>
+            </Box>
+          ))}
+      </Box>
+      <Box
+        flex={1}
+        display={{ md: 'none', lg: 'block' }}
+        ml="10px"
+        height="90vh"
+        width="80%"
+        marginLeft="10%"
+      >
+        <Card overflowY="scroll" p="20px" w="90%" ml="5%" textAlign="center">
+          <AppHeading text="Connect with People" fontsize="1.5rem" />
+          <Divider my="10px" borderColor="blackAlpha.500" />
+          {peopleToFollow?.map((item) => (
+            <MiniProfileCard key={item.id} user={item} />
+          ))}
+        </Card>
+      </Box>
+    </Box>
   );
 }
 
