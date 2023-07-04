@@ -1,6 +1,8 @@
 import { RegisterType } from '@/common/types';
 import { Input, Box } from '@chakra-ui/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { REGISTER_VALIDATION_SCHEMA } from '@/common/validations';
 import FormField from '../ui/FormField';
 import AppButton from '../ui/AppButton';
 
@@ -9,7 +11,10 @@ function RegisterForm() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<RegisterType>({ mode: 'onTouched' });
+  } = useForm<RegisterType>({
+    resolver: zodResolver(REGISTER_VALIDATION_SCHEMA),
+    mode: 'onTouched',
+  });
 
   const onFormSubmit: SubmitHandler<RegisterType> = (data) => {
     console.log(data);
