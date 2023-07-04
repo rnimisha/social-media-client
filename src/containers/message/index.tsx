@@ -7,11 +7,15 @@ import { useEffect, useState } from 'react';
 import { ChatList, IChatItemProps } from 'react-chat-elements';
 import 'react-chat-elements/dist/main.css';
 import './style/index.css';
+import { useLocation } from 'react-router-dom';
 
 function Message() {
+  const navData = useLocation();
   const currentUser = useAppSelector((state) => state.user);
   const [userChatList, setUserChatList] = useState<IChatItemProps[]>([]);
-  const [selectedChat, setSelectedChat] = useState<number>();
+  const [selectedChat, setSelectedChat] = useState<number>(
+    navData.state.chatid
+  );
   const { data: allChats, isLoading } = useGetUserChats({});
 
   useEffect(() => {

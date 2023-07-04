@@ -20,6 +20,8 @@ import useUnfollow from '@/hooks/useUnfollow';
 import useFollow from '@/hooks/useFollow';
 import { useEffect, useState } from 'react';
 import useGetFollowings from '@/hooks/useGetFollowings';
+import { useMutation } from '@tanstack/react-query';
+import { chatIdBetweenUsers } from '@/common/services';
 import AppButton from './ui/AppButton';
 import CoverImg from '../assets/images/nocover.png';
 import ChangeProfilePic from './form/ChangeProfilePic';
@@ -72,6 +74,22 @@ function ProfileCard({ userDetail }: PropsType) {
     } else {
       unfollowUser({ id: userDetail.id, username: userDetail.username });
     }
+  };
+
+  const { mutate: chatIdMsg } = useMutation(chatIdBetweenUsers, {
+    onError: (err) => {
+      console.log(err);
+    },
+    onSuccess: (data) => {
+      navigate('/messages', { state: { chatid: data.id } });
+    },
+  });
+
+  const handleOnMsgClick = () => {
+    const data = {
+      participants: [currUser.id, userDetail.id],
+    };
+    chatIdMsg(data);
   };
 
   return (
@@ -170,7 +188,7 @@ function ProfileCard({ userDetail }: PropsType) {
                 />
               </Stack>
               <Stack spacing={0} align="center" mt={8}>
-                <AppButton text="Message" />
+                <AppButton text="Message" action={handleOnMsgClick} />
               </Stack>
             </Stack>
           )}

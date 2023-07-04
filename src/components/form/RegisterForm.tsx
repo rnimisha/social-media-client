@@ -45,6 +45,7 @@ function RegisterForm() {
   });
 
   const onFormSubmit: SubmitHandler<RegisterType> = (data) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPass, ...otherData } = data;
     mutate(otherData);
   };

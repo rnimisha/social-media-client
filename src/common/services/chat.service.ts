@@ -26,6 +26,19 @@ export const getMessagesByChatId = async (
   }
 };
 
+type ChatUsersType = {
+  participants: number[];
+};
+export const chatIdBetweenUsers = async (data: ChatUsersType) => {
+  try {
+    const resp = await apiClient.post(`/chat/userChat`, data);
+    return resp.data;
+  } catch (error) {
+    const err = getErrorResponse(error as AxiosError);
+    throw new Error(JSON.stringify(err));
+  }
+};
+
 export const sendMessageService = async (
   content: string,
   chatId: number,
