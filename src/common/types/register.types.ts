@@ -5,3 +5,10 @@ export type RegisterType = {
   password: string;
   confirmPass: string;
 };
+
+export type RegsiterReqType = {
+  username: string;
+  name: string;
+  email: string;
+  password: string;
+};

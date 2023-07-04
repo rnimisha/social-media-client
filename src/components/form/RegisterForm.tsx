@@ -1,12 +1,17 @@
 import { RegisterType } from '@/common/types';
-import { Input, Box } from '@chakra-ui/react';
+import { Input, Box, useToast } from '@chakra-ui/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { REGISTER_VALIDATION_SCHEMA } from '@/common/validations';
+import { useMutation } from '@tanstack/react-query';
+import { registerService } from '@/common/services';
+import { useNavigate } from 'react-router-dom';
 import FormField from '../ui/FormField';
 import AppButton from '../ui/AppButton';
 
 function RegisterForm() {
+  const toast = useToast();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -16,8 +21,32 @@ function RegisterForm() {
     mode: 'onTouched',
   });
 
+  const { mutate } = useMutation(registerService, {
+    onSuccess: () => {
+      toast({
+        title: 'Registered Successfully',
+        description: 'You can now login',
+        status: 'success',
+        position: 'top-right',
+        isClosable: true,
+      });
+      navigate('/login');
+    },
+    onError: (err: Error) => {
+      const e = JSON.parse(err.message);
+      toast({
+        title: 'Login Error',
+        description: e.message || 'Unexpected Error',
+        status: 'error',
+        position: 'top-right',
+        isClosable: true,
+      });
+    },
+  });
+
   const onFormSubmit: SubmitHandler<RegisterType> = (data) => {
-    console.log(data);
+    const { confirmPass, ...otherData } = data;
+    mutate(otherData);
   };
   return (
     <form noValidate onSubmit={handleSubmit(onFormSubmit)}>

@@ -32,7 +32,7 @@ function Home() {
   };
 
   const query = useGetUserDetail({
-    username,
+    username: username || '',
     onSuccess: onGetUserDetailSuccess,
     onError: onGetUserDetailError,
   });
