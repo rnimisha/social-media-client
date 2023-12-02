@@ -10,7 +10,6 @@ A social media platform built with React.js to meet and connect with people. API
   <img src="https://img.shields.io/badge/chakra-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white" alt="Chakra">
   <img src="https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101" alt="Socket.io">
   <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
-  <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" alt="Postgres">
 </div>
 
 ## Features
@@ -70,14 +69,8 @@ A social media platform built with React.js to meet and connect with people. API
   cd social-media-client
 ```
 
-3. Build Image
+3. Run the script to build image and run containers
 
 ```bash
-  docker build -t connectify -f Dockerfile .
-```
-
-4. Run Containers
-
-```bash
-  docker run -p 3007:3007 --name connectifyapp connectify
+  bash run.sh
 ```
