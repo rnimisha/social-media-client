@@ -1,8 +1,7 @@
 import LoginForm from '@/components/form/LoginForm';
 
 // styles
-import { Box, Center, Grid, GridItem, Text, VStack } from '@chakra-ui/react';
-import AppHeading from '@/components/ui/AppHeading';
+import { Box, Center } from '@chakra-ui/react';
 import withAccess from '@/common/hoc/withAccess';
 import { Link } from 'react-router-dom';
 import AuthLeft from '@/components/AuthLeft';
