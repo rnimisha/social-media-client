@@ -22,7 +22,7 @@ function SinglePost() {
     <div>
       <BreadCrumb />
       {data !== undefined && data.author && (
-        <Card maxW="2xl">
+        <Card w="80%" ml="10%">
           <PostCard post={data} />
           <Box>
             <CommentForm userId={user.id} postId={data.id} />
