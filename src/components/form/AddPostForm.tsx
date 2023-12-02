@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import useAddPost from '@/hooks/useAddPost';
-import { Flex, Icon, Textarea, Box, Button, Spinner } from '@chakra-ui/react';
+import { Flex, Icon, Textarea, Box, Button, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { BiImageAdd } from 'react-icons/bi';
 import AppLoader from '../ui/AppLoader';
@@ -10,6 +10,7 @@ function AddPostForm() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewImgs, setPreviewImgs] = useState<string[]>([]);
   const isMaxFilesReached = selectedFiles.length >= 4;
+  const toast = useToast();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -39,6 +40,16 @@ function AddPostForm() {
     onSuccess: onSubmitSuccess,
   });
   const onFormSubmit = () => {
+    if (!caption) {
+      toast({
+        title: 'Caption is required',
+        status: 'error',
+        duration: 3000,
+        position: 'top-right',
+        isClosable: true,
+      });
+      return;
+    }
     const formData = new FormData();
     selectedFiles.forEach((file) => {
       formData.append(`images`, file);
@@ -57,8 +68,9 @@ function AddPostForm() {
       <Textarea
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
-        placeholder="Enter ......."
+        placeholder="Enter caption......."
         borderColor="blackAlpha.100"
+        required
       />
 
       <Box pt={4}>
