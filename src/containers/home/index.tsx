@@ -75,8 +75,8 @@ function Home() {
   };
 
   return (
-    <Box display="flex" justifyContent="space-between">
-      <Box flex={2} w="100%">
+    <Box display="flex" justifyContent="space-between" w="100%">
+      <Box flex={2} w="70%">
         <Card p={2}>
           <AddPostForm />
         </Card>
@@ -115,7 +115,7 @@ function Home() {
         }}
         ml="10px"
         height="90vh"
-        width="80%"
+        width="25%"
         marginLeft="2%"
       >
         <Card overflowY="scroll" p="20px" w="90%" ml="5%" textAlign="center">
