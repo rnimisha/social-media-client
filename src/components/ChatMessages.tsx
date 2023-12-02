@@ -61,7 +61,7 @@ function ChatMessages({ chatId }: PropsType) {
       </Box>
       <Flex align="center" justify="space-between" mt="auto" p={4}>
         <Textarea
-          borderColor="green"
+          borderColor="primary.100"
           flex="1"
           height="90px"
           resize="none"
@@ -73,7 +73,8 @@ function ChatMessages({ chatId }: PropsType) {
           ml={4}
           px={4}
           h={8}
-          colorScheme="teal"
+          bgColor="primary.300"
+          color="white"
           borderRadius="md"
           onClick={() => sendMsg()}
         >
